@@ -6,6 +6,48 @@
         <field name="arch" type="xml">
             <form string="Employee Loan">
                 <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <!-- Approve -->
+                        <button
+                            name="action_loan_approve"
+                            string="Approve"
+                            type="object"
+                            class="oe_stat_button"
+                            icon="fa-check"
+                            invisible="state not in ('draft', 'verify')"
+                            
+                        />
+                        
+                        <!-- Release -->
+                        <button
+                            name="action_loan_release"
+                            string="Release"
+                            type="object"
+                            class="oe_stat_button"
+                            icon="fa-send"
+                            invisible="state != 'approved'"
+                        />
+                    
+                        <!-- Mark as Paid -->
+                        <button
+                            name="action_loan_paid"
+                            string="Mark as Paid"
+                            type="object"
+                            class="oe_stat_button"
+                            icon="fa-money"
+                            invisible="state != 'released'"
+                        />
+                    
+                        <!-- Cancel -->
+                        <button
+                            name="action_loan_cancel"
+                            string="Cancel"
+                            type="object"
+                            class="oe_stat_button"
+                            icon="fa-times"
+                            invisible="state not in ('draft', 'verify')"
+                        />
+                    </div>
                     <header>
                         <!-- Confirm button visible when state is 'verify' -->
                         <button
