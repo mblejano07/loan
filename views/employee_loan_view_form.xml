@@ -1,0 +1,133 @@
+<odoo>
+    <!-- Form View -->
+    <record id="view_hr_employee_loan_form" model="ir.ui.view">
+        <field name="name">hr.employee.loan.form</field>
+        <field name="model">hr.employee.loan</field>
+        <field name="arch" type="xml">
+            <form string="Employee Loan">
+                <sheet>
+                    <header>
+                        <!-- Confirm button visible when state is 'verify' -->
+                        <button
+                            string="Confirm"
+                            name="action_loan_verify"
+                            type="object"
+                            invisible="state != 'verify'"
+                            class="oe_highlight"
+                        />
+    
+                        <!-- Approve button visible when state is 'verify' -->
+                        <button
+                            string="Approve"
+                            name="action_loan_approve"
+                            type="object"
+                            invisible="state != 'verify'"
+                            class="oe_highlight"
+                        />
+    
+                        <!-- Release button visible when state is 'approved' -->
+                        <button
+                            string="Release"
+                            name="action_loan_release"
+                            type="object"
+                            invisible="state != 'approved'"
+                        />
+    
+                        <!-- Mark as Paid button visible when state is 'released' -->
+                        <button
+                            string="Mark as Paid"
+                            name="action_loan_paid"
+                            type="object"
+                            invisible="state != 'released'"
+                            class="oe_highlight"
+                        />
+    
+                        <!-- Cancel Loan button visible when state is 'draft' or 'verify' -->
+                        <button
+                            string="Cancel Loan"
+                            name="action_loan_cancel"
+                            type="object"
+                            invisible="state not in ('draft', 'verify')"
+                        />
+    
+                        <!-- Set to Draft button visible when state is 'cancel' or 'verify' -->
+                        <button
+                            string="Set to Draft"
+                            name="action_loan_draft"
+                            type="object"
+                            invisible="state not in ('cancel', 'verify')"
+                        />
+    
+                        <!-- Status bar to show current state -->
+                        <field
+                            name="state"
+                            widget="statusbar"
+                            statusbar_visible="draft,verify,approved,released,done,cancel"
+                        />
+                    </header>
+                    
+                    <group>
+                        
+                        <field name="name" readonly="1"/>
+                        <field name="employee_id"/>
+                        <field name="institution_id"/>
+                        <field name="loan_amount"/>
+                        <field name="monthly_amortization"/>
+                        <field name="balance_amount" readonly="1"/>
+                        <field name="start_date"/>
+                        <field name="end_date"/>
+                        <field name="state" readonly="1"/>
+                    </group>
+                    <notebook>
+                        <page string="Amortization Schedule">
+                            <field name="loan_line_ids">
+                                <list editable="bottom">
+                                    <field name="date"/>
+                                    <field name="amount"/>
+                                    <field name="paid"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- List View -->
+    <record id="view_hr_employee_loan_tree" model="ir.ui.view">
+        <field name="name">hr.employee.loan.tree</field>
+        <field name="model">hr.employee.loan</field>
+        <field name="arch" type="xml">
+            <list string="Employee Loans">
+                <field name="name"/>
+                <field name="employee_id"/>
+                <field name="institution_id"/>
+                <field name="loan_amount"/>
+                <field name="balance_amount"/>
+                <field name="state"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="action_hr_employee_loan" model="ir.actions.act_window">
+        <field name="name">Employee Loans</field>
+        <field name="res_model">hr.employee.loan</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create the first Employee Loan
+            </p>
+        </field>
+    </record>
+
+    <!-- Top-level menu -->
+    <menuitem id="menu_employee_loan_main" name="Loans" sequence="100"/>
+
+    <!-- Submenu -->
+    <menuitem id="menu_hr_employee_loan" name="Employee Loans"
+              parent="menu_employee_loan_main"
+              action="action_hr_employee_loan"
+              sequence="10"/>
+</odoo>
